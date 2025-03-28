@@ -45,10 +45,12 @@ jobs:
           curl -Lo pixlet.tar.gz https://github.com/tidbyt/pixlet/releases/download/v0.30.0/pixlet_0.30.0_linux_amd64.tar.gz
           tar -xzf pixlet.tar.gz
           chmod +x pixlet
-          sudo mv pixlet /usr/local/bin
+
+      - name: Check Pixlet version
+        run: ./pixlet version
 
       - name: Render app.star
-        run: pixlet render app.star --name autopush
+        run: ./pixlet render app.star --name autopush
 
       - name: Push to Tidbyt
         run: |
