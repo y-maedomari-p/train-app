@@ -7,7 +7,7 @@ def main(config):
 
     # ラベル付き行を作成（最大3行）
     labeled_lines = []
-    icons = ["[1]", "[2]", "[3]"]
+    icons = ["(1)", "(2)", "(3)"]
 
     i = 0
     for line in lines:
