@@ -152,7 +152,7 @@ def format_trains(data):
     lines = []
     for train in data:
         type_short = train["type"][0].upper()
-        lines.append(f'for {train["destination"]} {train["time"]}{type_short}')
+        lines.append(f'{train["destination"]} {train["time"]}{type_short}')
     return "\n".join(lines)
 
 if __name__ == "__main__":
@@ -162,8 +162,3 @@ if __name__ == "__main__":
     os.makedirs("output", exist_ok=True)
     with open("output/timetable.txt", "w", encoding="utf-8") as f:
         f.write(text)
-
-
-
-
-
