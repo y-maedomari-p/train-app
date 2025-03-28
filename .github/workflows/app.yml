@@ -21,7 +21,7 @@ jobs:
           pip install jpholiday pytz
 
       - name: Run script
-        run: python generate.py
+        run: python app.py
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
