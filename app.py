@@ -124,11 +124,23 @@ TIMETABLE = {
     }
 }
 
+def get_day_type(date: datetime) -> str:
+    """与えられた日付が平日・土曜・休日のどれかを判定"""
+    if jpholiday.is_holiday(date) or date.weekday() == 6:  # 日曜 or 祝日
+        return "holiday"
+    elif date.weekday() == 5:  # 土曜
+        return "saturday"
+    else:
+        return "weekday"
+
 def get_next_trains(timetable, num_trains=3):
     """ 現在時刻以降の直近N本の電車を取得 """
     # 日本時間の現在時刻を取得
     tz_japan = pytz.timezone("Asia/Tokyo")
     now = datetime.now(tz_japan)
+
+    day_type = get_day_type(now)
+    timetable = timetable.get(day_type, [])
 
     # 現在時刻を基準にフィルタリング
     upcoming_trains = [
@@ -137,6 +149,14 @@ def get_next_trains(timetable, num_trains=3):
 
     # 直近N本を取得（最大で num_trains 本）
     return upcoming_trains[:num_trains]
+
+def format_trains(data):
+    lines = []
+    for train in data["next_trains"]:
+        type_short = train["type"][0].upper()
+        lines.append(f'for {train["destination"]} {train["time"]}{type_short}')
+    return "\n".join(lines)
+
 
 @app.route("/timetable", methods=["GET"])
 def get_timetable():
@@ -152,11 +172,14 @@ def get_timetable():
     # 直近3本の電車を取得
     next_trains = get_next_trains(TIMETABLE[station][direction], num_trains=3)
 
-    return jsonify({
-        "station": station,
-        "direction": direction,
-        "next_trains": next_trains
-    })
+    # return jsonify({
+    #      "station": station,
+    #      "direction": direction,
+    #      "next_trains": next_trains
+    # })
+
+    return format_trains({"next_trains": next_trains}), 200, {"Content-Type": "text/plain; charset=utf-8"}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
