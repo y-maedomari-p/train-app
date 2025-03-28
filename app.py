@@ -1,10 +1,8 @@
+import os
 from datetime import datetime
 
 import jpholiday
 import pytz
-from flask import Flask, jsonify, request
-
-app = Flask(__name__)
 
 # 仮の時刻表データ
 TIMETABLE = {
@@ -157,29 +155,15 @@ def format_trains(data):
         lines.append(f'for {train["destination"]} {train["time"]}{type_short}')
     return "\n".join(lines)
 
-
-@app.route("/timetable", methods=["GET"])
-def get_timetable():
-    """ 善光寺下駅の直近3本の電車時刻表を取得するAPI """
-    station = request.args.get("station", "zenkojishita").lower()
-    direction = request.args.get("direction", "up").lower()
-
-    if station not in TIMETABLE:
-        return jsonify({"error": "Station not found"}), 404
-    if direction not in TIMETABLE[station]:
-        return jsonify({"error": "Invalid direction"}), 400
-
-    # 直近3本の電車を取得
-    next_trains = get_next_trains(TIMETABLE[station][direction], num_trains=3)
-
-    # return jsonify({
-    #      "station": station,
-    #      "direction": direction,
-    #      "next_trains": next_trains
-    # })
-
-    return format_trains({"next_trains": next_trains}), 200, {"Content-Type": "text/plain; charset=utf-8"}
-
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    next_trains = get_next_trains(TIMETABLE["zenkojishita"]["up"])
+    text = format_trains(next_trains)
+
+    os.makedirs("output", exist_ok=True)
+    with open("output/timetable.txt", "w", encoding="utf-8") as f:
+        f.write(text)
+
+
+
+
+
