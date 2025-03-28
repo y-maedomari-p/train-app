@@ -2,7 +2,7 @@ name: Generate Timetable
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/3 * * * *"
   workflow_dispatch: # 手動実行も可能
 
 jobs:
@@ -42,8 +42,9 @@ jobs:
       # ✅ 以下がPixletによるTidbytへのpush処理
       - name: Install Pixlet
         run: |
-          curl -Lo pixlet.tar.gz https://github.com/tidbyt/pixlet/releases/latest/download/pixlet-linux-amd64.tar.gz
+          curl -Lo pixlet.tar.gz https://github.com/tidbyt/pixlet/releases/download/v0.27.1/pixlet-linux-amd64.tar.gz
           tar -xzf pixlet.tar.gz
+          chmod +x pixlet
           sudo mv pixlet /usr/local/bin
 
       - name: Render app.star
