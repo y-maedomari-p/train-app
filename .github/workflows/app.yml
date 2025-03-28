@@ -57,4 +57,5 @@ jobs:
           curl -X POST "https://api.tidbyt.com/v0/devices/${{ secrets.PIXLET_DEVICE_ID }}/push" \
             -H "Authorization: Bearer ${{ secrets.PIXLET_API_TOKEN }}" \
             -F "file=@app.webp" \
+            -F "installationID=autopush123" \
             -F "background=true"
