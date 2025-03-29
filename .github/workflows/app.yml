@@ -53,8 +53,4 @@ jobs:
         run: ./pixlet render app.star
 
       - name: Push to Tidbyt
-        run: |
-          curl -X POST "https://api.tidbyt.com/v0/devices/${{ secrets.PIXLET_DEVICE_ID }}/push" \
-            -H "Authorization: Bearer ${{ secrets.PIXLET_API_TOKEN }}" \
-            -F "file=@app.webp" \
-            -F "background=true"
+        run: ./pixlet push ${{ secrets.PIXLET_DEVICE_ID }} app.webp
