@@ -53,4 +53,4 @@ jobs:
         run: ./pixlet render app.star
 
       - name: Push to Tidbyt
-        run: ./pixlet push ${{ secrets.PIXLET_DEVICE_ID }} app.webp
+        run: ./pixlet push --device ${{ secrets.PIXLET_DEVICE_ID }} --token ${{ secrets.PIXLET_API_TOKEN }} app.webp
